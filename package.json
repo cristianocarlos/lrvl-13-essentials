@@ -3,6 +3,10 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "pint": "./vendor/bin/pint --test -v",
+        "pifix": "./vendor/bin/pint",
+        "prettier": "npx prettier resources/js --check",
+        "prfix": "npm run prettier -- --write",
         "tcheck": "tsc",
         "build": "vite build",
         "dev": "vite"
@@ -16,6 +20,7 @@
         "axios": ">=1.11.0 <=1.14.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^3.0.0",
+        "prettier": "^3.8.1",
         "tailwindcss": "^4.0.0",
         "typescript": "^6.0.2",
         "vite": "^8.0.0"

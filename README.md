@@ -119,35 +119,49 @@
   git commit -m "Setup TypeScript";
   ```
 
-# TailwindCSS
-https://tailwindcss.com/docs/installation/framework-guides/laravel/vite
-- {edit} `resources/js/app.js`
-  ``` js
-  import '../css/app.css'; // add
+# Prettier + Pint
+
+- `npm install --save-dev prettier;`
+- ```
+  curl -L https://gist.githubusercontent.com/cristianocarlos/978aba3851bc43a36bc6bab48919723c/raw/b4c9a8ec485e59b193ed83927b3a12558bf85031/.prettierrc.json -o .prettierrc.json; \
+  curl -L https://gist.githubusercontent.com/cristianocarlos/1c9454b5f29bc0d829a9bece5f3c2b43/raw/008df2b9b2bc4a9777c8d1aa704fe3982f100ae7/pint.json -o pint.json;
   ```
-- {replace file} `echo "export default () => <div className=\"bg-amber-500\">oi</div>;" > resources/js/pages/Home.jsx;`
+- {edit and add lines on `scripts`} package.json
+  ```
+  "pint": "./vendor/bin/pint --test -v",
+  "pifix": "./vendor/bin/pint",
+  "prfix": "npm run prettier -- --write",
+  "prettier": "npx prettier resources/js --check",
+  ```
+- {edit} `routes/web.php`
+  ```
+  // add
+  [*.{js,jsx,ts,tsx}]
+  indent_size = 2
+  ```
+- `npm run pint` (se apareceu erros, deu bom)
+- `npm run prettier` (se apareceu erros, deu bom)
+- `npm run pifix` (corrige os erros)
+- `npm run prfix` (corrige os erros)
 - `composer run dev` {se ok, commit}
   ```
   git add .; \
-  git commit -m "Setup TailwindCSS";
+  git commit -m "Setup+Fix Prettier+Pint";
   ```
+  
+# Eslint
 
-# Setup eslint + prettier
-
-- `npm install --save-dev eslint prettier @eslint/js eslint-config-prettier eslint-plugin-react eslint-plugin-import typescript-eslint eslint-plugin-react-refresh eslint-plugin-react-hooks eslint-plugin-unused-imports;`
+- `npm install --save-dev eslint@^9.39.4;`
+- `npm install --save-dev @eslint/js eslint-config-prettier eslint-plugin-react eslint-plugin-import typescript-eslint eslint-plugin-react-refresh eslint-plugin-react-hooks eslint-plugin-unused-imports;`
 - ```
-  curl -L https://gist.githubusercontent.com/cristianocarlos/84c801dc27deda227967132542aac444/raw/6e8a3b5d14e942af2a1ae2875910dcc354ca548f/eslint.config.js -o eslint.config.js; \
-  curl -L https://gist.githubusercontent.com/cristianocarlos/978aba3851bc43a36bc6bab48919723c/raw/b4c9a8ec485e59b193ed83927b3a12558bf85031/.prettierrc.json -o .prettierrc.json;
+  curl -L https://gist.githubusercontent.com/cristianocarlos/84c801dc27deda227967132542aac444/raw/6e8a3b5d14e942af2a1ae2875910dcc354ca548f/eslint.config.js -o eslint.config.js;
   ```
 - {edit and add lines on `scripts`} package.json
   ```
   "lifix": "npm run lint -- --fix",
   "lint": "npx eslint resources/js",
-  "pifix": "npm run prettier -- --write",
-  "prettier": "npx prettier resources/js --check",
   ```
 - `yarn lint` (se apareceu erros, deu bom)
-- `yarn prettier` (se apareceu erros, deu bom)
 - `composer run dev` {se ok, commit}
   ```
   git add .; \
@@ -156,7 +170,6 @@ https://tailwindcss.com/docs/installation/framework-guides/laravel/vite
 
 # Fix eslint + prettier
 - `yarn lifix`
-- `yarn pifix`
 - `composer run dev` {se ok, commit}
   ```
   git add .; \
@@ -231,6 +244,20 @@ https://tailwindcss.com/docs/installation/framework-guides/laravel/vite
   git add .; \
   git commit -m "Fix aliases";
   ```
+
+# TailwindCSS
+https://tailwindcss.com/docs/installation/framework-guides/laravel/vite
+- {edit} `resources/js/app.js`
+  ``` js
+  import '../css/app.css'; // add
+  ```
+- {replace file} `echo "export default () => <div className=\"bg-amber-500\">oi</div>;" > resources/js/pages/Home.jsx;`
+- `composer run dev` {se ok, commit}
+  ```
+  git add .; \
+  git commit -m "Setup TailwindCSS";
+  ```
+  
 # Setup SSR
 https://inertiajs.com/server-side-rendering
 - {edit} `vite.config.js`
