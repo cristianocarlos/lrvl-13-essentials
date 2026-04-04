@@ -42,7 +42,7 @@
   git commit -m "Laravel scaffolding + db";
   ```
 
-# Setup ReactJS + IntertiaJS
+# ReactJS + IntertiaJS
 
 #### Setup Inertia server side: https://inertiajs.com/server-side-setup
 - `composer require inertiajs/inertia-laravel`
@@ -90,9 +90,38 @@
   git commit -m "Setup ReactJS + InertiaJS";
   ```
 
-# Setup TailwindCSS
+# TypeScript
+- `npm install --save-dev typescript @types/react @types/react-dom`
+- `curl -L https://gist.githubusercontent.com/cristianocarlos/20dc8172ac6618942a71339a558e23d3/raw/5eaffe6396ff67fcec3e477942c2fd89291b4e96/tsconfig.json -o tsconfig.json`
+- {edit and replace text} `resources/views/app.blade.php` js>ts
+- {edit and replace text} `vite.config.js` js>ts
+- ```
+  git mv resources/js/pages/Home.jsx resources/js/pages/Home.tsx; \
+  git mv resources/js/app.js resources/js/app.ts;
+  ```
+- {edit and add line on `script`} `package.json`
+  ```
+  "tcheck": "tsc",
+  ```
+
+#### Complementary
+
+- ```
+  mkdir -p resources/js/types; \
+  curl -L https://gist.githubusercontent.com/cristianocarlos/a590208feee63fdd43d29eed449b26ad/raw/fe8d735bc9ae5d71e616ff93762e59e3d74c4802/vite-env.d.ts -o resources/js/types/vite-env.d.ts; \
+  curl -L https://gist.githubusercontent.com/cristianocarlos/f6cf38d5b7c5bbf57093a74ecb70e0a6/raw/e635cb6d3edde74406d45423e78175d7ea466afa/page.ts -o resources/js/types/page.ts; \
+  curl -L https://gist.githubusercontent.com/cristianocarlos/43feeb386592589c0d8b5f55ab8ea575/raw/15ddaebb1618347df6a002c0bcc4c5a11bf5a8f6/global.ts -o resources/js/types/global.ts;
+  ```
+- `npm run tcheck` {emular alguns erros manualmente, se apareceu erros, deu bom}
+- `composer run dev` {se ok, commit}
+  ```
+  git add .; \
+  git commit -m "Setup TypeScript";
+  ```
+
+# TailwindCSS
 https://tailwindcss.com/docs/installation/framework-guides/laravel/vite
-- {edit} `resources/js/app.jsx`
+- {edit} `resources/js/app.js`
   ``` js
   import '../css/app.css'; // add
   ```
@@ -103,64 +132,9 @@ https://tailwindcss.com/docs/installation/framework-guides/laravel/vite
   git commit -m "Setup TailwindCSS";
   ```
 
-# Setup CSS Modules with TailwindCSS compatibility:
-https://tailwindcss.com/docs/compatibility
-
-- {edit} vite.config.js
-  ``` js
-  css: {modules: {generateScopedName: '[name]__[local]___[hash:base64:5]', scopeBehaviour: 'global'}}, // add on .
-  ```
-- `curl -L https://gist.githubusercontent.com/cristianocarlos/803364442ee6d1b5af4983004584d956/raw/37b8eb513c21f23b6406638599fbd3bc08557f24/Home.module.css -o resources/js/pages/Home.module.css`
-- {edit and replace content} `resources/js/pages/Home.jsx`
-  ```javascript 
-  import styles from './Home.module.css';
-  
-  export default () => <div className = {`bg-amber-500 ${styles.wrapper}`}>oi</div>;
-  ```
-- `composer run dev` {se ok, commit}
-  ```
-  git add .; \
-  git commit -m "Setup CSS Modules with TailwindCSS compatibility (legacy)";
-  ```
-
-# Setup TypeScript
-- `yarn add --dev typescript @types/react @types/react-dom`
-- `curl -L https://gist.githubusercontent.com/cristianocarlos/20dc8172ac6618942a71339a558e23d3/raw/5eaffe6396ff67fcec3e477942c2fd89291b4e96/tsconfig.json -o tsconfig.json`
-- {edit and replace text} `resources/views/app.blade.php` jsx>tsx
-- {edit and replace text} `vite.config.js` jsx>tsx
-- {edit and replace text} `resources/js/app.jsx` jsx>tsx // TODO:
-- ```
-  git mv resources/js/pages/Home.jsx resources/js/pages/Home.tsx; \
-  git mv resources/js/app.jsx resources/js/app.tsx; \
-  git mv resources/js/bootstrap.js resources/js/bootstrap.ts;
-  ```
-- {edit and add line on `script`} `package.json`
-  ```
-  "tcheck": "tsc",
-  ```
-- `yarn tcheck` {se apareceu erros, deu bom}
-- `composer run dev` {se ok, commit}
-  ```
-  git add .; \
-  git commit -m "Setup TypeScript";
-  ```
-# Fix TypeScript
-
-- ```
-  mkdir -p resources/js/types; \
-  curl -L https://gist.githubusercontent.com/cristianocarlos/a590208feee63fdd43d29eed449b26ad/raw/fe8d735bc9ae5d71e616ff93762e59e3d74c4802/vite-env.d.ts -o resources/js/types/vite-env.d.ts; \
-  curl -L https://gist.githubusercontent.com/cristianocarlos/5ed36a2048dbe2c3259302d4a4ed9fdd/raw/cadc18b9e5aa62c167226a0dc8f506cfb2304174/common.ts -o resources/js/types/common.ts; \
-  curl -L https://gist.githubusercontent.com/cristianocarlos/43feeb386592589c0d8b5f55ab8ea575/raw/02cbdf46684e92d34ad81047d8e1d06d2ffca396/global.ts -o resources/js/types/global.ts;
-  ```
-- `composer run dev` {se ok, commit}
-  ```
-  git add .; \
-  git commit -m "Fix TypeScript";
-  ```
-
 # Setup eslint + prettier
 
-- `yarn add --dev eslint prettier @eslint/js eslint-config-prettier eslint-plugin-react eslint-plugin-import typescript-eslint eslint-plugin-react-refresh eslint-plugin-react-hooks eslint-plugin-unused-imports;`
+- `npm install --save-dev eslint prettier @eslint/js eslint-config-prettier eslint-plugin-react eslint-plugin-import typescript-eslint eslint-plugin-react-refresh eslint-plugin-react-hooks eslint-plugin-unused-imports;`
 - ```
   curl -L https://gist.githubusercontent.com/cristianocarlos/84c801dc27deda227967132542aac444/raw/6e8a3b5d14e942af2a1ae2875910dcc354ca548f/eslint.config.js -o eslint.config.js; \
   curl -L https://gist.githubusercontent.com/cristianocarlos/978aba3851bc43a36bc6bab48919723c/raw/b4c9a8ec485e59b193ed83927b3a12558bf85031/.prettierrc.json -o .prettierrc.json;
