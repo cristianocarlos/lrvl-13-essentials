@@ -44,29 +44,33 @@
 
 # Setup ReactJS + IntertiaJS
 
-- `yarn add react react-dom`
-- `yarn add @vitejs/plugin-react --dev`
-- {edit} `vite.config.js`
-  ``` js
-  import react from '@vitejs/plugin-react'; // add
-  ```
-  ``` js
-  input: ['resources/js/app.jsx'], // replace
-  ```
-  ``` js
-  react(), // add on plugins
-  ```
 #### Setup Inertia server side: https://inertiajs.com/server-side-setup
 - `composer require inertiajs/inertia-laravel`
 - `git mv resources/views/welcome.blade.php resources/views/app.blade.php`
 - {edit} `resources/views/app.blade.php`
     - {replace content from link: Root template}
 - `php artisan inertia:middleware`
-- {edit and replace content from link: Middleware} `bootstrap/app.php`
+- {edit and replace content from link section: Register middleware} `bootstrap/app.php`
+
 #### Setup Inertia client side: https://inertiajs.com/client-side-setup
-- `yarn add @inertiajs/react`
-- `git mv resources/js/app.js resources/js/app.jsx`
-- {edit and add content from link: Initialize the Inertia app} `resources/js/app.jsx`
+- `npm install react react-dom @inertiajs/react`
+- `npm install @vitejs/plugin-react @inertiajs/vite --save-dev`
+- {edit} `vite.config.js`
+  ``` js
+  // add on imports
+  import inertia from '@inertiajs/vite';
+  import react from '@vitejs/plugin-react';
+  ```
+  ``` js
+  input: ['resources/js/app.js'], // replace
+  ```
+  ``` js
+  // add on plugins
+  react(),
+  inertia(),
+  ```
+
+- {edit and add content from link: Initialize the Inertia app} `resources/js/app.js`
   ```
   mkdir -p resources/js/pages; \
   echo "export default () => <div>oi</div>;" > resources/js/pages/Home.jsx;
@@ -75,19 +79,11 @@
   ``` php
   return inertia('Home'); // replace
   ```
+
 #### Complementary
 - {edit} `resources/views/app.blade.php`
   ``` php
   @viteReactRefresh // add before @vite
-  @vite('resources/js/app.jsx') // replace
-  ```
-- {edit} `resources/js/app.jsx`
-  ``` js
-  import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers'; // add
-  ```
-  ``` js
-  resolve: name => resolvePageComponent(`./pages/${name}.jsx`, import.meta.glob('./pages/**/*.jsx')), // replace
-  ```  
 - `composer run dev` {se ok, commit}
   ```
   git add .; \
