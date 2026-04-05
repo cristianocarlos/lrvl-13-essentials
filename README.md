@@ -73,7 +73,7 @@
 - {edit and add content from link: Initialize the Inertia app} `resources/js/app.js`
   ```
   mkdir -p resources/js/pages; \
-  echo "export default () => <div>oi</div>;" > resources/js/pages/Home.jsx;
+  echo "export default () => <div>oi</div>;" > resources/js/pages/Home.tsx;
   ```
 - {edit} `routes/web.php`
   ``` php
@@ -139,8 +139,8 @@
   [*.{js,jsx,ts,tsx}]
   indent_size = 2
   ```
-- `npm run pint` (se apareceu erros, deu bom)
-- `npm run prettier` (se apareceu erros, deu bom)
+- `npm run pint` (emular alguns erros manualmente, se apareceu erros, deu bom)
+- `npm run prettier` (emular alguns erros manualmente, se apareceu erros, deu bom)
 - `npm run pifix` (corrige os erros)
 - `npm run prfix` (corrige os erros)
 - `composer run dev` {se ok, commit}
@@ -151,29 +151,25 @@
   
 # Eslint
 
-- `npm install --save-dev eslint@^9.39.4;`
-- `npm install --save-dev @eslint/js eslint-config-prettier eslint-plugin-react eslint-plugin-import typescript-eslint eslint-plugin-react-refresh eslint-plugin-react-hooks eslint-plugin-unused-imports;`
+{alguns pacotes do eslint estão com problema de peer dependency}
+- ```
+  curl -L https://gist.githubusercontent.com/cristianocarlos/f9a66a9319d2b8d4747871664cf1e3ca/raw/18ae8bdba01849b606ee4eaae46b069aa8f38643/.npmrc -o .npmrc;
+  ```
+- `npm install --save-dev eslint@^9 @eslint/js eslint-config-prettier eslint-plugin-react eslint-plugin-import typescript-eslint eslint-plugin-react-refresh eslint-plugin-react-hooks eslint-plugin-unused-imports;`
 - ```
   curl -L https://gist.githubusercontent.com/cristianocarlos/84c801dc27deda227967132542aac444/raw/6e8a3b5d14e942af2a1ae2875910dcc354ca548f/eslint.config.js -o eslint.config.js;
   ```
 - {edit and add lines on `scripts`} package.json
   ```
-  "lifix": "npm run lint -- --fix",
   "lint": "npx eslint resources/js",
+  "lifix": "npm run lint -- --fix",
   ```
-- `yarn lint` (se apareceu erros, deu bom)
+- `npm run lint` (emular alguns erros manualmente, se apareceu erros, deu bom)
+- `npm run lifix` (corrige os erros)
 - `composer run dev` {se ok, commit}
   ```
   git add .; \
-  git commit -m "Setup eslint + prettier";
-  ```
-
-# Fix eslint + prettier
-- `yarn lifix`
-- `composer run dev` {se ok, commit}
-  ```
-  git add .; \
-  git commit -m "Fix eslint + prettier";
+  git commit -m "Setup+fix Eslint";
   ```
 
 # Prepare to setup aliases
@@ -182,7 +178,7 @@
   echo "export default () => <div>Internal</div>;" > resources/js/pages/Internal.tsx; \
   mkdir -p resources/phpgen; \
   echo "export default {text: (v: string) => v};" > resources/phpgen/yii-lang.ts; \
-  curl -L https://gist.githubusercontent.com/cristianocarlos/9a94ab0fb8cae56c1e6cc96c4f83c135/raw/e6225d86a6f4b8c51e5dab4732730d648aafab43/Home.jsx -o resources/js/pages/Home.tsx;
+  curl -L https://gist.githubusercontent.com/cristianocarlos/9a94ab0fb8cae56c1e6cc96c4f83c135/raw/e6225d86a6f4b8c51e5dab4732730d648aafab43/Home.tsx -o resources/js/pages/Home.tsx;
   ```
 - `composer run dev` {se ok, commit}
   ```
@@ -251,134 +247,9 @@ https://tailwindcss.com/docs/installation/framework-guides/laravel/vite
   ``` js
   import '../css/app.css'; // add
   ```
-- {replace file} `echo "export default () => <div className=\"bg-amber-500\">oi</div>;" > resources/js/pages/Home.jsx;`
+- {replace file} `echo "export default () => <div className=\"bg-amber-500\">oi</div>;" > resources/js/pages/Home.tsx;`
 - `composer run dev` {se ok, commit}
   ```
   git add .; \
   git commit -m "Setup TailwindCSS";
-  ```
-  
-# Setup SSR
-https://inertiajs.com/server-side-rendering
-- {edit} `vite.config.js`
-  ```js
-  ssr: ['resources/js/ssr.tsx'], // add on plugins laravel
-  ```
-- {edit} `resources/js/app.tsx`, add block: if (import.meta.env.SSR) {...}
-  ```js
-  // replace
-  import {createRoot, hydrateRoot} from 'react-dom/client';
-  ```
-  ```js
-  // add before createRoot
-  if (import.meta.env.SSR) {
-    hydrateRoot(el, <App {...props} />);
-    return;
-  }
-  ```
-- {edit and replace line} `package.json`
-  ```
-  "build": "vite build && vite build --ssr",
-  ```
-- `touch resources/js/ssr.tsx`
-- {edit} `resources/js/ssr.tsx`
-    - {replace content from link: Add server entry-point}
-    - {edit: resolvePageComponent (aka app.tsx), jsx>tsx}
-- `yarn build`
-- `php artisan inertia:start-ssr`
-- `composer run dev` {se ok, commit}
-  ```
-  git add .; \
-  git commit -m "Setup SSR";
-  ```
-
-# Setup navigation + routes (PHP server)
-- `composer require tightenco/ziggy`
-- `yarn add @types/ziggy-js --dev`
-- {edit} `app/Http/Middleware/HandleInertiaRequests.php`
-  ```php
-  // add after ...parent::share($request),
-  'ziggy' => fn () => [
-    ...(new \Tighten\Ziggy\Ziggy)->toArray(),
-    'location' => $request->url(),
-  ],
-  ```
-- {edit} `routes/web.php`
-  ```php
-  // add
-  Route::get('/link-test', function () {return inertia('Home');})->name('link-test-name');
-  Route::get('/button-test', function () {return inertia('Home');})->name('button-test-name');
-  ```
-- {edit} `resources/view/app.blade.php`
-  ```php
-  // add after @inertiaHead
-  @routes
-  ```
-- {edit and add lines} `resources/js/pages/Home.tsx`
-  ```ts
-  import {Link, router} from '@inertiajs/react';
-  ```
-  ```js
-  // before {YiiLang.text('Banana')}
-  <header className="flex gap-4 flex-col bg-white text-blue-600">
-    <h1 className="text-xl">{props.ziggy.location}</h1>
-    <Link href="/">Home</Link>
-    <Link href="/link-test">Link test raw</Link>
-    <Link href={route('link-test-name')}>Link test with route</Link>
-    <button onClick={() => router.visit('/button-test')}>Button test raw</button>
-    <button onClick={() => router.visit(route('button-test-name'))}>Button test with route</button>
-  </header>
-  ```
-- {edit and add line on compilerOptions.paths} `tsconfig.json`
-  ```
-  "ziggy-js": ["./vendor/tightenco/ziggy"],
-  ```
-- {edit and replace content} `resources/js/types/common.ts`
-  ```ts
-  import type {Config} from 'ziggy-js';
-
-  export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
-    ziggy: Config & {location: string};
-  };
-  ```
-- {edit and add lines} `resources/js/types/global.ts`
-  ```ts
-  import type {route as ziggyRoute} from 'ziggy-js';
-  ```
-  ```ts
-  // inside declare global
-  let route: typeof ziggyRoute;
-  ```
-- `composer run dev` {se ok, commit}
-  ```
-  git add .; \
-  git commit -m "Setup navigation + routes (PHP server)";
-  ```
-
-# Setup navigation + routes (SSR)
-
-- {edit and replace content} `resources/js/ssr.tsx`
-  ```ts
-  import {route} from '../../vendor/tightenco/ziggy';
-
-  import type {RouteName} from 'ziggy-js';
-  ```
-  ```ts
-  // add after setup: (
-  /* eslint-disable */
-  // @ts-expect-error
-  global.route<RouteName> = (name, params, absolute) =>
-    route(name, params as any, absolute, {
-      ...page.props.ziggy,
-      location: new URL(page.props.ziggy.location),
-    });
-  /* eslint-enable */
-  ```
-
-- `yarn build`
-- `php artisan inertia:start-ssr`
-- `composer run dev` {se ok, commit}
-  ```
-  git add .; \
-  git commit -m "Setup navigation + routes (SSR)";
   ```
