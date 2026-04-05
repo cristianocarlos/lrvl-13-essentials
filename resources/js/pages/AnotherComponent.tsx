@@ -1,1 +1,1 @@
-export default () => <div>AnotherComponent</div>;
+export default () => <div className="bg-amber-500">AnotherComponent</div>;

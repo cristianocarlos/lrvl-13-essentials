@@ -226,11 +226,11 @@
 
 # TailwindCSS
 https://tailwindcss.com/docs/installation/framework-guides/laravel/vite
-- {edit} `resources/js/app.js`
+- {edit} `resources/js/app.ts`
   ``` js
-  import '../css/app.css'; // add
+  import '~/css/app.css'; // add
   ```
-- {replace file} `echo "export default () => <div className=\"bg-amber-500\">oi</div>;" > resources/js/pages/Home.tsx;`
+- {replace file} `echo "export default () => <div className=\"bg-amber-500\">AnotherComponent</div>;" > resources/js/pages/AnotherComponent.tsx;`
 - `composer run dev` {se ok, commit}
   ```
   git add .; \
