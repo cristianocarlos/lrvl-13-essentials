@@ -116,7 +116,7 @@
 - `composer run dev` {se ok, commit}
   ```
   git add .; \
-  git commit -m "Setup TypeScript";
+  git commit -m "Setup typescript";
   ```
 
 # Prettier + Pint
@@ -146,7 +146,7 @@
 - `composer run dev` {se ok, commit}
   ```
   git add .; \
-  git commit -m "Setup+Fix Prettier+Pint";
+  git commit -m "Setup+fix prettier+pint";
   ```
   
 # Eslint
@@ -169,24 +169,20 @@
 - `composer run dev` {se ok, commit}
   ```
   git add .; \
-  git commit -m "Setup+fix Eslint";
+  git commit -m "Setup+fix eslint";
   ```
 
-# Prepare to setup aliases
+# Aliases
+
+### Prepare
 - ``` 
-  echo "export default () => <div>Sibling</div>;" > resources/js/pages/Sibling.tsx; \
-  echo "export default () => <div>Internal</div>;" > resources/js/pages/Internal.tsx; \
+  echo "export default () => <div>AnotherComponent</div>;" > resources/js/pages/AnotherComponent.tsx; \
   mkdir -p resources/phpgen; \
-  echo "export default {text: (v: string) => v};" > resources/phpgen/yii-lang.ts; \
-  curl -L https://gist.githubusercontent.com/cristianocarlos/9a94ab0fb8cae56c1e6cc96c4f83c135/raw/e6225d86a6f4b8c51e5dab4732730d648aafab43/Home.tsx -o resources/js/pages/Home.tsx;
-  ```
-- `composer run dev` {se ok, commit}
-  ```
-  git add .; \
-  git commit -m "Prepare to setup aliases";
+  echo "export default {misc: (v: string) => v};" > resources/phpgen/yii-lang.ts; \
+  curl -L https://gist.githubusercontent.com/cristianocarlos/30c37d4046d6cf5dd78fb46256679627/raw/9a2e6913639860aaef3e7d83d2b456152a72003a/Home.tsx -o resources/js/pages/Home.tsx;
   ```
 
-# Setup aliases
+### Setup
 - {edit and add lines on `compilerOptions`} `tsconfig.json`
   ```
   "paths": {
@@ -213,32 +209,19 @@
   {group: 'builtin', pattern: '~/phpgen/yii-*', position: 'before'},
   {group: 'internal', pattern: '@/**', position: 'before'},
   ```
+
+### Fix
+
+- {edit} resources/js/pages/Home.tsx;
+
+    - `import Internal from './AnotherComponent';` > `import Internal from '@/pages/AnotherComponent';`
+    - `import type {PageProps} from '../types/page';` > `import type {PageProps} from '@/types/page';`
+    - `import YiiLang from '../../phpgen/yii-lang';` > `import YiiLang from '~/phpgen/yii-lang';`
+
 - `composer run dev` {se ok, commit}
   ```
   git add .; \
   git commit -m "Setup aliases";
-  ```
-
-# Fix aliases
-
-- {edit} resources/js/pages/Home.tsx;
-
-    - `import Internal from './Internal';` > `import Internal from '@/pages/Internal';`
-    - `import Internal from './Sibling';` > `import Sibling from '@/pages/Sibling';`
-    - `import type {PageProps} from '../types/common';` > `import type {PageProps} from '@/types/common';`
-    - `import YiiLang from '../../phpgen/yii-lang';` > `import YiiLang from '~/phpgen/yii-lang';`
-
-- {edit} resources/js/pages/Home.module.css;
-    - `@reference "../../css/app.css";` > `@reference "~/css/app.css";`
-
-- {edit} resources/js/app.tsx;
-    - `import '../css/app.css';` > `import '~/css/app.css';`
-
-
-- `composer run dev` {se ok, commit}
-  ```
-  git add .; \
-  git commit -m "Fix aliases";
   ```
 
 # TailwindCSS

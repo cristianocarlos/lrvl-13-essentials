@@ -45,6 +45,8 @@ export default tseslint.config(
           'newlines-between': 'always-and-inside-groups',
           pathGroups: [
             {group: 'builtin', pattern: '*.css', patternOptions: {matchBase: true}, position: 'before'},
+            {group: 'builtin', pattern: '~/phpgen/yii-*', position: 'before'},
+            {group: 'internal', pattern: '@/**', position: 'before'},
           ],
           pathGroupsExcludedImportTypes: ['type'],
         },
