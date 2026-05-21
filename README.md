@@ -73,7 +73,7 @@
 - {edit and add content from link: Initialize the Inertia app} `resources/js/app.js`
   ```
   mkdir -p resources/js/pages; \
-  echo "export default () => <div>oi</div>;" > resources/js/pages/Home.tsx;
+  echo "export default () => <div>oi</div>;" > resources/js/pages/Home.jsx;
   ```
 - {edit} `routes/web.php`
   ``` php
@@ -133,7 +133,7 @@
   "prfix": "npm run prettier -- --write",
   "prettier": "npx prettier resources/js --check",
   ```
-- {edit} `routes/web.php`
+- {edit} `.editorconfig`
   ```
   // add
   [*.{js,jsx,ts,tsx}]
