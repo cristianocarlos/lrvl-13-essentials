@@ -121,26 +121,22 @@
 
 # Prettier + Pint
 
-- `npm install --save-dev prettier;`
+- `npm install --save-dev prettier prettier-plugin-tailwindcss;`
 - ```
-  curl -L https://gist.githubusercontent.com/cristianocarlos/978aba3851bc43a36bc6bab48919723c/raw/b4c9a8ec485e59b193ed83927b3a12558bf85031/.prettierrc.json -o .prettierrc.json; \
+  curl -L https://gist.githubusercontent.com/cristianocarlos/978aba3851bc43a36bc6bab48919723c/raw/40c7130ebc6c5cb1fe251f14f63d1b2cc72581aa/.prettierrc.json -o .prettierrc.json; \
   curl -L https://gist.githubusercontent.com/cristianocarlos/1c9454b5f29bc0d829a9bece5f3c2b43/raw/008df2b9b2bc4a9777c8d1aa704fe3982f100ae7/pint.json -o pint.json;
   ```
 - {edit and add lines on `scripts`} package.json
   ```
-  "pint": "./vendor/bin/pint --test -v",
   "pifix": "./vendor/bin/pint",
-  "prfix": "npm run prettier -- --write",
-  "prettier": "npx prettier resources/js --check",
+  "prfix": "npx prettier --write --list-different '**/*.{json,js,jsx,ts,tsx,css}'",
   ```
 - {edit} `.editorconfig`
   ```
   // add
-  [*.{js,jsx,ts,tsx}]
+  [*.{js,jsx,ts,tsx,css}]
   indent_size = 2
   ```
-- `npm run pint` (emular alguns erros manualmente, se apareceu erros, deu bom)
-- `npm run prettier` (emular alguns erros manualmente, se apareceu erros, deu bom)
 - `npm run pifix` (corrige os erros)
 - `npm run prfix` (corrige os erros)
 - `composer run dev` {se ok, commit}
@@ -152,12 +148,9 @@
 # Eslint
 
 {alguns pacotes do eslint estão com problema de peer dependency}
+- `npm install --save-dev eslint @eslint/js eslint-config-prettier typescript-eslint eslint-plugin-react-refresh @eslint-react/eslint-plugin eslint-plugin-perfectionist;`
 - ```
-  curl -L https://gist.githubusercontent.com/cristianocarlos/f9a66a9319d2b8d4747871664cf1e3ca/raw/18ae8bdba01849b606ee4eaae46b069aa8f38643/.npmrc -o .npmrc;
-  ```
-- `npm install --save-dev eslint@^9 @eslint/js eslint-config-prettier eslint-plugin-react eslint-plugin-import typescript-eslint eslint-plugin-react-refresh eslint-plugin-react-hooks eslint-plugin-unused-imports;`
-- ```
-  curl -L https://gist.githubusercontent.com/cristianocarlos/84c801dc27deda227967132542aac444/raw/6e8a3b5d14e942af2a1ae2875910dcc354ca548f/eslint.config.js -o eslint.config.js;
+  curl -L https://gist.githubusercontent.com/cristianocarlos/84c801dc27deda227967132542aac444/raw/a1fd36f7b284562fc6dc4168d3605611920279b3/eslint.config.js -o eslint.config.js;
   ```
 - {edit and add lines on `scripts`} package.json
   ```
@@ -202,13 +195,6 @@
       '@': path.resolve(__dirname, './resources/js'),
     },
   },
-  ```
-- {edit} `eslint.config.js`
-  ```js
-  // add on `rules.'import/order'.pathGroups`
-  {group: 'builtin', pattern: '~/phpgen/yii-*', position: 'before'},
-  {group: 'internal', pattern: '@/**', position: 'before'},
-  ```
 
 ### Fix
 
